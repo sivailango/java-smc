@@ -1,0 +1,52 @@
+%{
+%}
+
+%start PayMap::Start
+%class Pay
+
+%map PayMap
+%%
+
+// State		Transition						EndState						Actions
+
+Start {
+				ReadyForPay						CheckCard						{ initiated(); }
+}
+
+CheckCard {
+				IsValidCard
+				[ctxt.isValidCard()]			CheckBalance					{ cardAuthSuccess(); }	
+				IsValidCard						InvalidCard						{ cardAuthFailed(); }
+}	
+
+CheckBalance {
+				CheckCardBalance	
+				[ctxt.checkBalance()]			UpdatedBalance  				{ updateBalance(); }				
+				CheckCardBalance				NoBalance						{ noBalance(); }
+}
+
+UpdatedBalance {
+				SendToMerchant					PaymentSettled					{ sendToMerchant(); }
+}
+
+PaymentSettled {
+				DoneTransaction					Stop							{}
+}
+
+InvalidCard {
+				CardNotValid					Stop							{ invalidCard(); }
+}
+
+NoBalance {
+				LowBalance						Stop							{}
+}
+
+Stop {
+				Stopped							End								{ stopped(); }				
+}
+
+End {
+																				
+}
+
+%%

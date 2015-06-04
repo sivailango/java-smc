@@ -1,0 +1,12 @@
+<project name="smc" basedir="." default="run">
+	
+	<property name="lib.dir" location="../../../../lib" />
+	
+	<taskdef name="smc" classname="net.sf.smc.ant.SmcJarWrapper" classpath="${lib.dir}/smc-ant-6.0.1.jar" />
+	
+	<target name="run">
+		<smc target="java" smfile="Pay.sm" smcjar="${lib.dir}/Smc.jar" />
+	</target>
+	
+</project>
+
